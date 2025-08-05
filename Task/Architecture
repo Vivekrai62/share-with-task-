@@ -1,0 +1,410 @@
+# Enterprise Flutter Architecture
+
+
+lib/
+├── main.dart
+├── main_dev.dart
+├── main_prod.dart
+├── main_staging.dart
+├── bootstrap.dart
+├── app/
+│   ├── app.dart
+│   ├── routes.dart
+│   └── bindings.dart
+├── core/
+│   ├── base/
+│   │   ├── base_controller.dart
+│   │   ├── base_repository.dart
+│   │   ├── base_service.dart
+│   │   └── base_use_case.dart
+│   ├── constants/
+│   │   ├── api_constants.dart
+│   │   ├── app_constants.dart
+│   │   ├── asset_constants.dart
+│   │   └── string_constants.dart
+│   ├── error/
+│   │   ├── exceptions.dart
+│   │   ├── failures.dart
+│   │   └── error_handler.dart
+│   ├── extensions/
+│   │   ├── context_extension.dart
+│   │   ├── string_extension.dart
+│   │   └── widget_extension.dart
+│   ├── network/
+│   │   ├── dio_client.dart
+│   │   ├── api_endpoints.dart
+│   │   ├── interceptors.dart
+│   │   └── network_info.dart
+│   ├── services/
+│   │   ├── analytics_service.dart
+│   │   ├── cache_service.dart
+│   │   ├── notification_service.dart
+│   │   ├── storage_service.dart
+│   │   └── sync_service.dart
+│   ├── theme/
+│   │   ├── app_colors.dart
+│   │   ├── app_text_styles.dart
+│   │   ├── app_theme.dart
+│   │   └── dimensions.dart
+│   ├── utils/
+│   │   ├── date_utils.dart
+│   │   ├── encryption_utils.dart
+│   │   ├── formatter_utils.dart
+│   │   ├── image_utils.dart
+│   │   ├── logger.dart
+│   │   ├── platform_utils.dart
+│   │   ├── validation_utils.dart
+│   │   └── responsive_utils.dart
+│   └── widgets/
+│       ├── base_widgets.dart
+│       ├── custom_button.dart
+│       ├── custom_text_field.dart
+│       ├── loading_widget.dart
+│       ├── error_widget.dart
+│       └── empty_state_widget.dart
+├── features/
+│   ├── authentication/
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   ├── auth_local_datasource.dart
+│   │   │   │   └── auth_remote_datasource.dart
+│   │   │   ├── models/
+│   │   │   │   ├── login_model.dart
+│   │   │   │   ├── register_model.dart
+│   │   │   │   ├── user_model.dart
+│   │   │   │   └── token_model.dart
+│   │   │   └── repositories/
+│   │   │       └── auth_repository_impl.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   ├── user.dart
+│   │   │   │   └── auth_token.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── auth_repository.dart
+│   │   │   └── usecases/
+│   │   │       ├── login_usecase.dart
+│   │   │       ├── logout_usecase.dart
+│   │   │       ├── register_usecase.dart
+│   │   │       └── refresh_token_usecase.dart
+│   │   └── presentation/
+│   │       ├── controllers/
+│   │       │   ├── auth_controller.dart
+│   │       │   ├── login_controller.dart
+│   │       │   └── register_controller.dart
+│   │       ├── pages/
+│   │       │   ├── login_page.dart
+│   │       │   ├── register_page.dart
+│   │       │   ├── forgot_password_page.dart
+│   │       │   └── reset_password_page.dart
+│   │       └── widgets/
+│   │           ├── auth_form.dart
+│   │           ├── social_login_buttons.dart
+│   │           └── password_strength_indicator.dart
+│   ├── customer_management/
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   ├── customer_local_datasource.dart
+│   │   │   │   └── customer_remote_datasource.dart
+│   │   │   ├── models/
+│   │   │   │   ├── customer_model.dart
+│   │   │   │   ├── customer_response_model.dart
+│   │   │   │   └── customer_request_model.dart
+│   │   │   └── repositories/
+│   │   │       └── customer_repository_impl.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── customer.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── customer_repository.dart
+│   │   │   └── usecases/
+│   │   │       ├── get_customers_usecase.dart
+│   │   │       ├── add_customer_usecase.dart
+│   │   │       ├── update_customer_usecase.dart
+│   │   │       └── delete_customer_usecase.dart
+│   │   └── presentation/
+│   │       ├── controllers/
+│   │       │   ├── customer_controller.dart
+│   │       │   └── customer_list_controller.dart
+│   │       ├── pages/
+│   │       │   ├── customer_list_page.dart
+│   │       │   ├── customer_detail_page.dart
+│   │       │   ├── add_customer_page.dart
+│   │       │   └── edit_customer_page.dart
+│   │       └── widgets/
+│   │           ├── customer_card.dart
+│   │           ├── customer_form.dart
+│   │           └── customer_search_bar.dart
+│   ├── order_management/
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   ├── order_local_datasource.dart
+│   │   │   │   └── order_remote_datasource.dart
+│   │   │   ├── models/
+│   │   │   │   ├── order_model.dart
+│   │   │   │   ├── order_item_model.dart
+│   │   │   │   └── place_order_model.dart
+│   │   │   └── repositories/
+│   │   │       └── order_repository_impl.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   ├── order.dart
+│   │   │   │   └── order_item.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── order_repository.dart
+│   │   │   └── usecases/
+│   │   │       ├── place_order_usecase.dart
+│   │   │       ├── get_orders_usecase.dart
+│   │   │       ├── cancel_order_usecase.dart
+│   │   │       └── track_order_usecase.dart
+│   │   └── presentation/
+│   │       ├── controllers/
+│   │       │   ├── order_controller.dart
+│   │       │   ├── cart_controller.dart
+│   │       │   └── order_history_controller.dart
+│   │       ├── pages/
+│   │       │   ├── order_list_page.dart
+│   │       │   ├── order_detail_page.dart
+│   │       │   ├── place_order_page.dart
+│   │       │   ├── cart_page.dart
+│   │       │   └── order_tracking_page.dart
+│   │       └── widgets/
+│   │           ├── order_card.dart
+│   │           ├── order_status_indicator.dart
+│   │           ├── cart_item.dart
+│   │           └── order_summary.dart
+│   ├── product_catalog/
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   ├── product_local_datasource.dart
+│   │   │   │   └── product_remote_datasource.dart
+│   │   │   ├── models/
+│   │   │   │   ├── product_model.dart
+│   │   │   │   ├── category_model.dart
+│   │   │   │   └── product_variant_model.dart
+│   │   │   └── repositories/
+│   │   │       └── product_repository_impl.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   ├── product.dart
+│   │   │   │   ├── category.dart
+│   │   │   │   └── product_variant.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── product_repository.dart
+│   │   │   └── usecases/
+│   │   │       ├── get_products_usecase.dart
+│   │   │       ├── search_products_usecase.dart
+│   │   │       ├── get_product_details_usecase.dart
+│   │   │       └── filter_products_usecase.dart
+│   │   └── presentation/
+│   │       ├── controllers/
+│   │       │   ├── product_controller.dart
+│   │       │   ├── product_search_controller.dart
+│   │       │   └── product_filter_controller.dart
+│   │       ├── pages/
+│   │       │   ├── product_list_page.dart
+│   │       │   ├── product_detail_page.dart
+│   │       │   ├── product_search_page.dart
+│   │       │   ├── category_page.dart
+│   │       │   └── favorites_page.dart
+│   │       └── widgets/
+│   │           ├── product_card.dart
+│   │           ├── product_grid.dart
+│   │           ├── product_filter.dart
+│   │           ├── product_image_carousel.dart
+│   │           └── price_display.dart
+│   ├── profile_management/
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   ├── profile_local_datasource.dart
+│   │   │   │   └── profile_remote_datasource.dart
+│   │   │   ├── models/
+│   │   │   │   ├── profile_model.dart
+│   │   │   │   └── update_profile_model.dart
+│   │   │   └── repositories/
+│   │   │       └── profile_repository_impl.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── user_profile.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── profile_repository.dart
+│   │   │   └── usecases/
+│   │   │       ├── get_profile_usecase.dart
+│   │   │       ├── update_profile_usecase.dart
+│   │   │       └── change_password_usecase.dart
+│   │   └── presentation/
+│   │       ├── controllers/
+│   │       │   ├── profile_controller.dart
+│   │       │   └── settings_controller.dart
+│   │       ├── pages/
+│   │       │   ├── profile_page.dart
+│   │       │   ├── edit_profile_page.dart
+│   │       │   ├── settings_page.dart
+│   │       │   └── change_password_page.dart
+│   │       └── widgets/
+│   │           ├── profile_header.dart
+│   │           ├── profile_menu_item.dart
+│   │           └── avatar_picker.dart
+│   ├── dashboard/
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   ├── dashboard_local_datasource.dart
+│   │   │   │   └── dashboard_remote_datasource.dart
+│   │   │   ├── models/
+│   │   │   │   ├── dashboard_stats_model.dart
+│   │   │   │   └── analytics_model.dart
+│   │   │   └── repositories/
+│   │   │       └── dashboard_repository_impl.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   ├── dashboard_stats.dart
+│   │   │   │   └── analytics_data.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── dashboard_repository.dart
+│   │   │   └── usecases/
+│   │   │       ├── get_dashboard_data_usecase.dart
+│   │   │       └── get_analytics_usecase.dart
+│   │   └── presentation/
+│   │       ├── controllers/
+│   │       │   ├── dashboard_controller.dart
+│   │       │   └── analytics_controller.dart
+│   │       ├── pages/
+│   │       │   ├── dashboard_page.dart
+│   │       │   ├── analytics_page.dart
+│   │       │   └── reports_page.dart
+│   │       └── widgets/
+│   │           ├── stats_card.dart
+│   │           ├── chart_widget.dart
+│   │           ├── metrics_overview.dart
+│   │           └── quick_actions.dart
+│   ├── notifications/
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   ├── notification_local_datasource.dart
+│   │   │   │   └── notification_remote_datasource.dart
+│   │   │   ├── models/
+│   │   │   │   └── notification_model.dart
+│   │   │   └── repositories/
+│   │   │       └── notification_repository_impl.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── notification.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── notification_repository.dart
+│   │   │   └── usecases/
+│   │   │       ├── get_notifications_usecase.dart
+│   │   │       ├── mark_as_read_usecase.dart
+│   │   │       └── delete_notification_usecase.dart
+│   │   └── presentation/
+│   │       ├── controllers/
+│   │       │   └── notification_controller.dart
+│   │       ├── pages/
+│   │       │   └── notifications_page.dart
+│   │       └── widgets/
+│   │           ├── notification_item.dart
+│   │           └── notification_badge.dart
+│   └── search/
+│       ├── data/
+│       │   ├── datasources/
+│       │   │   └── search_remote_datasource.dart
+│       │   ├── models/
+│       │   │   └── search_result_model.dart
+│       │   └── repositories/
+│       │       └── search_repository_impl.dart
+│       ├── domain/
+│       │   ├── entities/
+│       │   │   └── search_result.dart
+│       │   ├── repositories/
+│       │   │   └── search_repository.dart
+│       │   └── usecases/
+│       │       ├── global_search_usecase.dart
+│       │       └── search_suggestions_usecase.dart
+│       └── presentation/
+│           ├── controllers/
+│           │   └── search_controller.dart
+│           ├── pages/
+│           │   ├── search_page.dart
+│           │   └── search_results_page.dart
+│           └── widgets/
+│               ├── search_bar.dart
+│               ├── search_suggestions.dart
+│               └── search_result_item.dart
+├── shared/
+│   ├── models/
+│   │   ├── api_response.dart
+│   │   ├── pagination_model.dart
+│   │   └── filter_model.dart
+│   ├── widgets/
+│   │   ├── app_bar.dart
+│   │   ├── bottom_navigation.dart
+│   │   ├── drawer.dart
+│   │   ├── dialogs/
+│   │   │   ├── confirmation_dialog.dart
+│   │   │   ├── error_dialog.dart
+│   │   │   └── loading_dialog.dart
+│   │   ├── forms/
+│   │   │   ├── form_field.dart
+│   │   │   ├── dropdown_field.dart
+│   │   │   └── date_picker_field.dart
+│   │   └── layouts/
+│   │       ├── scaffold_with_nav.dart
+│   │       ├── responsive_layout.dart
+│   │       └── page_wrapper.dart
+│   └── enums/
+│       ├── app_state.dart
+│       ├── user_role.dart
+│       └── order_status.dart
+└── config/
+    ├── environment/
+    │   ├── app_config.dart
+    │   ├── dev_config.dart
+    │   ├── prod_config.dart
+    │   └── staging_config.dart
+    ├── database/
+    │   ├── hive_config.dart
+    │   └── local_database.dart
+    └── di/
+        ├── injection_container.dart
+        ├── data_layer_injection.dart
+        ├── domain_layer_injection.dart
+        └── presentation_layer_injection.dart
+```
+
+## 📋 File Naming Changes Summary
+
+### Major Structural Changes:
+1. **Feature-Based Architecture**: Moved from layer-based to feature-based structure
+2. **Clean Architecture**: Strict separation of data, domain, and presentation layers
+3. **Consistent Naming**: All files follow snake_case with descriptive names
+
+### Key Naming Transformations:
+
+#### Controllers (was view_models):
+- `login_viewmodel.dart` → `login_controller.dart`
+- `customer_order_viewmodel.dart` → `order_controller.dart`
+- `product_viewmodel.dart` → `product_controller.dart`
+
+#### Pages (was screens):
+- `login_screen.dart` → `login_page.dart`
+- `customers_screen.dart` → `customer_list_page.dart`
+- `product_screen.dart` → `product_list_page.dart`
+
+#### Models:
+- `login_entity.dart` → `login_model.dart`
+- `addCustomer_entity.dart` → `customer_model.dart`
+- `product_response_model.dart` → `product_model.dart`
+
+#### Services:
+- `hive_service.dart` → `cache_service.dart`
+- `network_api_services.dart` → `dio_client.dart`
+- `ThemeChange.dart` → `app_theme.dart`
+
+### Why This Structure is Superior:
+
+1. **Scalability**: Each feature is self-contained
+2. **Maintainability**: Easy to locate and modify code
+3. **Team Collaboration**: Multiple developers can work on different features
+4. **Testing**: Clear separation makes unit testing easier
+5. **Code Reusability**: Shared components are easily accessible
+6. **Industry Standard**: Used by Google, Meta, Uber, and other tech giants
+
+This architecture supports microservices, modular development, and follows SOLID principles strictly.
