@@ -1,0 +1,1225 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Project Dashboard',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'Arial',
+      ),
+      home: ProjectDashboard(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class ProjectDashboard extends StatefulWidget {
+  @override
+  _ProjectDashboardState createState() => _ProjectDashboardState();
+}
+
+class _ProjectDashboardState extends State<ProjectDashboard> {
+  bool isChartView = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFFF5F7FA),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Project Reminder Section
+            _buildProjectReminderSection(),
+            SizedBox(height: 16),
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Left Column
+                Expanded(
+                  child: Column(
+                    children: [
+                      _buildTaskStatsSection(),
+                      SizedBox(height: 16),
+                      _buildLatestTaskSection(),
+                      SizedBox(height: 16),
+                      _buildProjectStatsSection(),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 16),
+
+                // Right Column
+                Expanded(
+                  child: Column(
+                    children: [
+                      _buildTaskPerformanceSection(),
+                      SizedBox(height: 16),
+                      _buildTransactionsSection(),
+                      SizedBox(height: 16),
+                      _buildPaymentReminderSection(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProjectReminderSection() {
+    return Container(
+      padding: EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF3B82F6),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(Icons.list_alt, color: Colors.white, size: 18),
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    'PROJECT REMINDER',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1F2937),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'See all',
+                    style: TextStyle(
+                      color: Color(0xFF3B82F6),
+                      fontSize: 16,
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward_ios,
+                      color: Color(0xFF3B82F6), size: 16),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 24),
+
+          // Stats Cards
+          Row(
+            children: [
+              Expanded(child: _buildStatCard('Today', '10', Icons.filter_alt)),
+              SizedBox(width: 16),
+              Expanded(child: _buildStatCard('Missing', '2', Icons.filter_alt)),
+              SizedBox(width: 16),
+              Expanded(child: _buildStatCard('Upcoming', '5', Icons.filter_alt)),
+            ],
+          ),
+          SizedBox(height: 32),
+
+          // Today Reminder List
+          Text(
+            'TODAY REMINDER LIST',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF1F2937),
+            ),
+          ),
+          SizedBox(height: 16),
+
+          // Reminder Items
+          ...['IBAAS', 'CoolRoof', 'AA Food Factory(i)', 'Saphnix']
+              .map((title) => _buildReminderItem(title))
+              .toList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatCard(String title, String count, IconData icon) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Color(0xFFF9FAFB),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: Color(0xFF1E40AF),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: Colors.white, size: 24),
+          ),
+          SizedBox(height: 12),
+          Text(
+            title,
+            style: TextStyle(
+              color: Color(0xFF6B7280),
+              fontSize: 14,
+            ),
+          ),
+          SizedBox(height: 4),
+          Text(
+            count,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF1F2937),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReminderItem(String title) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Color(0xFFF9FAFB),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: Color(0xFF3B82F6),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(Icons.access_time, color: Colors.white, size: 16),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF1F2937),
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  '16 October 2024 at 12:13pm',
+                  style: TextStyle(
+                    color: Color(0xFF6B7280),
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: Color(0xFFFEF3C7),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              'Today',
+              style: TextStyle(
+                color: Color(0xFFD97706),
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          SizedBox(width: 8),
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: Color(0xFF3B82F6),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Center(
+              child: Text(
+                'R',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTaskStatsSection() {
+    return Container(
+      padding: EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF3B82F6),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(Icons.task_alt, color: Colors.white, size: 18),
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    'TASK STATS',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1F2937),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => setState(() => isChartView = false),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      child: Text(
+                        'List',
+                        style: TextStyle(
+                          color: isChartView ? Color(0xFF6B7280) : Color(0xFF3B82F6),
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => setState(() => isChartView = true),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      child: Text(
+                        'Chart',
+                        style: TextStyle(
+                          color: isChartView ? Color(0xFF3B82F6) : Color(0xFF6B7280),
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 24),
+
+          // Task Stats Cards
+          Row(
+            children: [
+              Expanded(child: _buildTaskStatCard('Not Started', '3')),
+              SizedBox(width: 12),
+              Expanded(child: _buildTaskStatCard('In Progress', '10')),
+              SizedBox(width: 12),
+              Expanded(child: _buildTaskStatCard('Pending', '15')),
+            ],
+          ),
+          SizedBox(height: 32),
+
+          // Weekly Chart
+          Container(
+            height: 200,
+            child: _buildWeeklyChart(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTaskStatCard(String title, String count) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Color(0xFFF9FAFB),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Color(0xFF6B7280),
+              fontSize: 12,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            count,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF1F2937),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWeeklyChart() {
+    List<int> data = [6, 6, 5, 9, 4];
+    List<String> days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: List.generate(5, (index) {
+          double height = (data[index] / 9.0) * 120;
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: Color(0xFF3B82F6),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Text(
+                    data[index].toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+              Container(
+                width: 4,
+                height: height,
+                decoration: BoxDecoration(
+                  color: Color(0xFF93C5FD),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              SizedBox(height: 8),
+              Transform.rotate(
+                angle: -0.785398, // -45 degrees
+                child: Text(
+                  days[index],
+                  style: TextStyle(
+                    color: Color(0xFF6B7280),
+                    fontSize: 10,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget _buildTaskPerformanceSection() {
+    return Container(
+      padding: EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF3B82F6),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(Icons.trending_up, color: Colors.white, size: 18),
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    'TASK PERFORMANCE',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1F2937),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    '23 March 2021',
+                    style: TextStyle(
+                      color: Color(0xFF6B7280),
+                      fontSize: 14,
+                    ),
+                  ),
+                  Icon(Icons.keyboard_arrow_down, color: Color(0xFF6B7280)),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 32),
+
+          // Performance Content
+          Row(
+            children: [
+              // Circular Progress
+              Container(
+                width: 120,
+                height: 120,
+                child: Stack(
+                  children: [
+                    Container(
+                      width: 120,
+                      height: 120,
+                      child: CircularProgressIndicator(
+                        value: 0.65,
+                        strokeWidth: 8,
+                        backgroundColor: Color(0xFFE5E7EB),
+                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF1E40AF)),
+                      ),
+                    ),
+                    Container(
+                      width: 120,
+                      height: 120,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'COMPLETED',
+                              style: TextStyle(
+                                color: Color(0xFF6B7280),
+                                fontSize: 10,
+                              ),
+                            ),
+                            Text(
+                              '65%',
+                              style: TextStyle(
+                                color: Color(0xFF3B82F6),
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 32),
+
+              // Task Progress Info
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'TASK PROGRESS',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1F2937),
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(fontSize: 14),
+                      children: [
+                        TextSpan(
+                          text: '06:06:15',
+                          style: TextStyle(
+                            color: Color(0xFF1F2937),
+                            fontFamily: 'monospace',
+                          ),
+                        ),
+                        TextSpan(
+                          text: ' / ',
+                          style: TextStyle(color: Color(0xFF6B7280)),
+                        ),
+                        TextSpan(
+                          text: '8Hrs',
+                          style: TextStyle(color: Color(0xFF3B82F6)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLatestTaskSection() {
+    return Container(
+      padding: EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF3B82F6),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(Icons.task_alt, color: Colors.white, size: 18),
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    'LATEST TASK',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1F2937),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'See all',
+                    style: TextStyle(
+                      color: Color(0xFF3B82F6),
+                      fontSize: 16,
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward_ios,
+                      color: Color(0xFF3B82F6), size: 16),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 24),
+
+          // Task Items
+          _buildTaskItem('Somacare Inner Images', 'In Progress', Color(0xFFEBF8FF), Color(0xFF3B82F6), Color(0xFFEC4899)),
+          _buildTaskItem('Fitur carousal images', 'Completed', Color(0xFFEBF8FF), Color(0xFF3B82F6), Color(0xFF3B82F6)),
+          _buildTaskItem('Wings migration website', 'To-Do', Color(0xFFFEF3C7), Color(0xFFD97706), Color(0xFF3B82F6)),
+          _buildTaskItem('Alcoskin website mockup', 'In Progress', Color(0xFFEBF8FF), Color(0xFF3B82F6), Color(0xFFF97316)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTaskItem(String title, String status, Color statusBg, Color statusText, Color iconColor) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Color(0xFFF9FAFB),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Designing Tasks',
+                  style: TextStyle(
+                    color: Color(0xFF6B7280),
+                    fontSize: 12,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF1F2937),
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(Icons.access_time, size: 16, color: Color(0xFF6B7280)),
+                    SizedBox(width: 4),
+                    Text(
+                      '15 May 2024 at 12:29 pm',
+                      style: TextStyle(
+                        color: Color(0xFF6B7280),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(width: 16),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: statusBg,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              status,
+              style: TextStyle(
+                color: statusText,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          SizedBox(width: 12),
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: iconColor,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(Icons.layers, color: Colors.white, size: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProjectStatsSection() {
+    return Container(
+      padding: EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF3B82F6),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(Icons.bar_chart, color: Colors.white, size: 18),
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    'PROJECT STATS',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1F2937),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'See all',
+                    style: TextStyle(
+                      color: Color(0xFF3B82F6),
+                      fontSize: 16,
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward_ios,
+                      color: Color(0xFF3B82F6), size: 16),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 24),
+
+          // Project Stats Cards
+          Row(
+            children: [
+              Expanded(child: _buildProjectStatCard('Not Started', '5')),
+              SizedBox(width: 12),
+              Expanded(child: _buildProjectStatCard('In Progress', '0')),
+              SizedBox(width: 12),
+              Expanded(child: _buildProjectStatCard('On Hold', '0')),
+            ],
+          ),
+          SizedBox(height: 32),
+
+          Text(
+            'Last 12 Months Completed Projects Graphical View',
+            style: TextStyle(
+              color: Color(0xFF6B7280),
+              fontSize: 14,
+            ),
+          ),
+          SizedBox(height: 16),
+
+          // Bar Chart
+          Container(
+            height: 200,
+            child: _buildProjectChart(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProjectStatCard(String title, String count) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Color(0xFFF9FAFB),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Color(0xFF6B7280),
+              fontSize: 12,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            count,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF1F2937),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProjectChart() {
+    List<int> data = [25, 16, 13, 6, 18, 14];
+    List<String> months = ['Jan 2023', 'Feb 2023', 'Mar 2023', 'Apr 2023', 'May 2023', 'Jun 2023'];
+
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: List.generate(6, (index) {
+          double height = (data[index] / 25.0) * 120;
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                width: 32,
+                height: height,
+                decoration: BoxDecoration(
+                  color: Color(0xFF93C5FD),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(4)),
+                ),
+              ),
+              SizedBox(height: 8),
+              Transform.rotate(
+                angle: -0.785398, // -45 degrees
+                child: Text(
+                  months[index],
+                  style: TextStyle(
+                    color: Color(0xFF6B7280),
+                    fontSize: 10,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget _buildTransactionsSection() {
+    return Container(
+      padding: EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF3B82F6),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(Icons.credit_card, color: Colors.white, size: 18),
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    'TRANSACTIONS',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1F2937),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'See all',
+                    style: TextStyle(
+                      color: Color(0xFF3B82F6),
+                      fontSize: 16,
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward_ios,
+                      color: Color(0xFF3B82F6), size: 16),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 24),
+
+          // Transaction Items
+          ...List.generate(4, (index) => _buildTransactionItem()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTransactionItem() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Premium 60 Package Sale done ...',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF1F2937),
+                  fontSize: 16,
+                ),
+              ),
+              SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(Icons.access_time, size: 16, color: Color(0xFF6B7280)),
+                  SizedBox(width: 4),
+                  Text(
+                    '4 April 2024 at 01:58 pm',
+                    style: TextStyle(
+                      color: Color(0xFF6B7280),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '₹4000',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1F2937),
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                'Praksah Shah',
+                style: TextStyle(
+                  color: Color(0xFF6B7280),
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentReminderSection() {
+    return Container(
+      padding: EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF3B82F6),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(Icons.calendar_today, color: Colors.white, size: 18),
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    'PAYMENT REMINDER',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1F2937),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'See all',
+                    style: TextStyle(
+                      color: Color(0xFF3B82F6),
+                      fontSize: 16,
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward_ios,
+                      color: Color(0xFF3B82F6), size: 16),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 24),
+
+          Text(
+            'CURRENT MONTH PROJECTS',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF1F2937),
+            ),
+          ),
+          SizedBox(height: 16),
+
+          // Payment Items
+          _buildPaymentItem('Ajit Kumar', '₹4000'),
+          _buildPaymentItem('Rajnesh Verma', '₹2000'),
+          _buildPaymentItem('Kartik Sharma', '₹6000'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentItem(String name, String amount) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: Row(
+        children: [
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: Color(0xFF3B82F6),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(Icons.credit_card, color: Colors.white, size: 16),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF1F2937),
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  amount,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1F2937),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: 32,
+            height: 32,
+            margin: EdgeInsets.only(right: 8),
+            decoration: BoxDecoration(
+              color: Color(0xFF3B82F6),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Center(
+              child: Text(
+                'R',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: Color(0xFFF97316),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Center(
+              child: Text(
+                'R',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+'
